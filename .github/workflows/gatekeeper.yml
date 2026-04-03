@@ -1,0 +1,43 @@
+name: Gatekeeper
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  gatekeeper:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Sync dependencies
+        run: uv sync --all-extras
+
+      - name: Run all githooks
+        run: uv run prek run --all-files
+
+      - name: Get affected unit tests
+        run: |
+            uv run python scripts/affected_tests.py
+            echo "AFFECTED_TESTS=$(echo $AFFECTED_TESTS)" >> $GITHUB_ENV
+
+      - name: Run affected unit tests
+        run: |
+            # Only run if there are affected tests
+            if [ -n "$AFFECTED_TESTS" ]; then
+                echo "Running affected tests: $AFFECTED_TESTS"
+                uv run pytest $AFFECTED_TESTS
+            else
+                echo "No affected tests to run."
+            fi

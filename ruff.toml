@@ -1,0 +1,17 @@
+line-length = 120
+
+[lint]
+ignore = [
+    "D401", # Imperative Docstrings
+    "G004", # f-string logging
+    "S607", # Starting a process with a partial executable path
+    # "W1203", # Lazy string interpolation in logging functions
+]
+
+# Use google pydocstyle convention for docstring style
+# Ignore assertions in test files
+per-file-ignores = { "tests/**" = ["S101"] }
+pydocstyle.convention = "google"
+
+[format]
+skip-magic-trailing-comma = true

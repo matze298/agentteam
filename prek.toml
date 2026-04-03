@@ -2,12 +2,12 @@
 repo = "https://github.com/pre-commit/pre-commit-hooks"
 rev = "v6.0.0"
 hooks = [
-    { id = "trailing-whitespace" },
-    { id = "end-of-file-fixer" },
-    { id = "check-yaml" },
-    { id = "check-toml" },
-    { id = "check-added-large-files" },
-    { id = "debug-statements" },
+  { id = "trailing-whitespace" },
+  { id = "end-of-file-fixer" },
+  { id = "check-yaml" },
+  { id = "check-toml" },
+  { id = "check-added-large-files" },
+  { id = "debug-statements" },
 ]
 
 [[repos]]
@@ -15,21 +15,21 @@ hooks = [{
     id = "ruff-check",
     name = "ruff check",
     language = "system",
-    entry = "uv run ruff check",
+    entry = "ruff check",
     files = "\\.py$",
   },
   {
     id = "ruff-format",
     name = "ruff format",
     language = "system",
-    entry = "uv run ruff format",
+    entry = "ruff format",
     files = "\\.py$",
   },
   {
     id = "ty-check",
     name = "ty check",
     language = "system",
-    entry = "uv run ty",
+    entry = "ty check",
     files = "\\.py$",
   }]
 repo = "local"
