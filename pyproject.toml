@@ -9,6 +9,7 @@ optional-dependencies = { dev = [
     "prek",
     "ruff",
     "ty",
+    "typer",
 ], "test" = [
     "pytest",
     "pytest-xdist",
