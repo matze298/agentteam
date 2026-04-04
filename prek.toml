@@ -31,5 +31,13 @@ hooks = [{
     language = "system",
     entry = "ty check",
     files = "\\.py$",
+  },
+  {
+    id = "check-dependencies",
+    name = "Check Imports against pyproject.toml",
+    language = "system",
+    entry = "python .github/scripts/check_imports.py",
+    pass_filenames= false,
+    files = "\\.py$, pyproject.toml",
   }]
 repo = "local"

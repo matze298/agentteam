@@ -2,6 +2,7 @@ import subprocess
 import os
 import sys
 import logging
+import typer
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -92,4 +93,4 @@ def get_affected_tests(changed_files: set[str], dependency_map: dict[str, set[st
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

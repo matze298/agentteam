@@ -3,14 +3,34 @@ name = "agentteam"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.10"
-dependencies = ["crewai", "crewai-tools", "langchain-openai", "docker"]
+requires-python = ">=3.11"
+dependencies = ["agents", "orchestration"]
 optional-dependencies = { dev = [
     "prek",
     "ruff",
     "ty",
     "typer",
 ], "test" = [
+    "tomli",
     "pytest",
     "pytest-xdist",
 ] }
+
+[build-system]
+requires = ["uv_build>=0.11.3,<0.12"]
+build-backend = "uv_build"
+
+
+# UV settings for MonoRepo
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = [
+    "agents",
+    "orchestration",
+]
+
+[tool.uv.sources]
+agents = {workspace = true}
+orchestration = {workspace = true}

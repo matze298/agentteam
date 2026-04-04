@@ -5,7 +5,6 @@ ignore = [
     "D401", # Imperative Docstrings
     "G004", # f-string logging
     "S607", # Starting a process with a partial executable path
-    # "W1203", # Lazy string interpolation in logging functions
 ]
 
 # Use google pydocstyle convention for docstring style
