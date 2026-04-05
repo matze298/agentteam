@@ -7,7 +7,7 @@ authors = [
     { name = "Matthias Rath", email = "matze29894@gmail.com" }
 ]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = ["typer"]
 
 [project.scripts]
 ci = "ci:main"

@@ -38,8 +38,7 @@ hooks = [{
     id = "check-dependencies",
     name = "Check Imports against pyproject.toml",
     language = "system",
-    entry = "python .github/scripts/check_imports.py",
+    entry = "python ci/src/ci/check_imports.py",
     pass_filenames= false,
-    files = "\\.py$, pyproject.toml",
   }]
 repo = "local"
