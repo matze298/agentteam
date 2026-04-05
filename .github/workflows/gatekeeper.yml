@@ -44,8 +44,8 @@ jobs:
             # Only run if there are affected tests
             if [ -n "$AFFECTED_TESTS" ]; then
                 echo "Running affected tests: $AFFECTED_TESTS"
-                pytest $AFFECTED_TESTS
+                uv run pytest $AFFECTED_TESTS
             else
                 echo "Running all tests"
-                pytest .
+                uv run pytest .
             fi
