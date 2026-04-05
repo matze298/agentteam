@@ -1,9 +1,11 @@
-import subprocess
-import os
-import sys
-import logging
-import typer
+"""Identify unit tests to be executed based on changed Python files."""
 
+import logging
+import os
+import subprocess
+import sys
+
+import typer
 
 _LOGGER = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -49,9 +51,9 @@ def build_dependency_graph() -> dict[str, set[str]]:
         A dictionary mapping each Python file to a set of files it imports.
     """
     try:
-        graph_raw = subprocess.check_output(["/usr/bin/uv", "run", "ruff", "analyze", "graph"], text=True)
-    except subprocess.CalledProcessError as e:
-        _LOGGER.exception(f"Error executing 'ruff analyze graph': {e}")
+        graph_raw = subprocess.check_output(["uv", "run", "ruff", "analyze", "graph"], text=True)
+    except subprocess.CalledProcessError:
+        _LOGGER.exception("Error executing 'ruff analyze graph'.")
         sys.exit(1)
 
     dependency_map = {}

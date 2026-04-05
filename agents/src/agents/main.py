@@ -1,7 +1,9 @@
+"""Entrypoint for Agent deployment."""
+
 from agents.crew import LatestAiDevelopmentCrew
 
 
-def run():
+def run() -> None:
     """Run the crew."""
     inputs = {"topic": "Cycling Training plan"}
     LatestAiDevelopmentCrew().crew().kickoff(inputs=inputs)

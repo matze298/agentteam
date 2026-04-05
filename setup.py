@@ -1,6 +1,6 @@
 #!/usr/bin/env -S uv run --script
 
-"""Setup the DevEnvironment via Typer."""
+"""Setup the DevEnvironment."""
 # /// script
 # dependencies = [
 # "typer",
@@ -8,9 +8,10 @@
 # ///
 
 import subprocess
-from typing import Final
-import typer
 from pathlib import Path
+from typing import Final
+
+import typer
 
 VENV_DIR: Final = ".venv"
 

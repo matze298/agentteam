@@ -9,7 +9,7 @@ optional-dependencies = { dev = [
     "prek",
     "ruff",
     "ty",
-    "typer",
+    "typer>=0.23.1",
 ], "test" = [
     "tomli",
     "pytest",

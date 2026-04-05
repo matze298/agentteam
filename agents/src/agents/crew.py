@@ -1,9 +1,11 @@
 """Defines our ResearchCrew."""
 
+from typing import Any
+
 from crewai import Agent, Crew, Process, Task
-from crewai.project import CrewBase, agent, crew, task, before_kickoff, after_kickoff
-from crewai_tools import SerperDevTool
 from crewai.agents.agent_builder.base_agent import BaseAgent
+from crewai.project import CrewBase, after_kickoff, agent, before_kickoff, crew, task
+from crewai_tools import SerperDevTool
 
 
 @CrewBase
@@ -16,14 +18,14 @@ class LatestAiDevelopmentCrew:
     tasks_config: dict
 
     @before_kickoff
-    def before_kickoff_function(self, inputs):
-        print(f"Before kickoff function with inputs: {inputs}")
-        return inputs  # You can return the inputs or modify them as needed
+    def before_kickoff_function(self, inputs: dict[str, Any]) -> dict[str, Any]:
+        """Modify the inputs before the kickoff."""
+        return inputs
 
     @after_kickoff
-    def after_kickoff_function(self, result):
-        print(f"After kickoff function with result: {result}")
-        return result  # You can return the result or modify it as needed
+    def after_kickoff_function(self, result: dict[str, Any]) -> dict[str, Any]:
+        """Modify the result after the kickoff."""
+        return result
 
     @agent
     def researcher(self) -> Agent:

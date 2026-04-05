@@ -1,9 +1,13 @@
 line-length = 120
 
 [lint]
+select = ["ALL"]
 ignore = [
+    "COM812", # Conflicts with ruff formatter
     "D401", # Imperative Docstrings
     "G004", # f-string logging
+    "S602", # Allow shell-execution
+    "S603", # Check-call subprocess
     "S607", # Starting a process with a partial executable path
 ]
 
@@ -11,6 +15,3 @@ ignore = [
 # Ignore assertions in test files
 per-file-ignores = { "tests/**" = ["S101"], "setup.py" = ["S607"]}
 pydocstyle.convention = "google"
-
-[format]
-skip-magic-trailing-comma = true

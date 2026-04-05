@@ -61,7 +61,7 @@ requires-dist = [
     { name = "ruff", marker = "extra == 'dev'" },
     { name = "tomli", marker = "extra == 'test'" },
     { name = "ty", marker = "extra == 'dev'" },
-    { name = "typer", marker = "extra == 'dev'" },
+    { name = "typer", marker = "extra == 'dev'", specifier = ">=0.23.1" },
 ]
 provides-extras = ["dev", "test"]
 

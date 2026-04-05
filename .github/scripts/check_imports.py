@@ -1,26 +1,31 @@
+"""Import checker used for test-selection."""
+
 import ast
 import logging
 import sys
 import tomllib
-import typer
 from pathlib import Path
+
+import typer
 
 _LOGGER = logging.getLogger(__name__)
 
 
 def get_workspace_members(root_path: Path) -> list[Path]:
-    with open(root_path / "pyproject.toml", "rb") as f:
+    """Retrieves workspace members from a project's pyproject.toml."""
+    with Path(root_path / "pyproject.toml").open("rb") as f:
         data = tomllib.load(f)
     members = data.get("tool", {}).get("uv", {}).get("workspace", {}).get("members", [])
     return [root_path / member for member in members]
 
 
 def get_declared_dependencies(project_path: Path) -> set[str]:
+    """Retrieves declared dependencies from a project's pyproject.toml."""
     pyproject_file = project_path / "pyproject.toml"
     if not pyproject_file.exists():
         return set()
 
-    with open(pyproject_file, "rb") as f:
+    with Path(pyproject_file).open("rb") as f:
         data = tomllib.load(f)
 
     deps = data.get("project", {}).get("dependencies", [])
@@ -39,6 +44,7 @@ def get_declared_dependencies(project_path: Path) -> set[str]:
 
 
 def get_imports_from_file(file_path: Path) -> set[str]:
+    """Retrieves imports from a Python file."""
     imports = set()
     try:
         with Path(file_path).open("r", encoding="utf-8") as f:
@@ -48,15 +54,15 @@ def get_imports_from_file(file_path: Path) -> set[str]:
             if isinstance(node, ast.Import):
                 for alias in node.names:
                     imports.add(alias.name.split(".")[0])
-            elif isinstance(node, ast.ImportFrom):
-                if node.level == 0 and node.module:
-                    imports.add(node.module.split(".")[0])
-    except Exception as e:
-        _LOGGER.exception(f"Error parsing {file_path}: {e}")
+            elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module:
+                imports.add(node.module.split(".")[0])
+    except Exception:
+        _LOGGER.exception(f"Error parsing {file_path}")
     return imports
 
 
-def main(*, verbose: bool = True):
+def main(*, verbose: bool = True) -> None:
+    """Entrypoint for the import checker."""
     if verbose:
         logging.basicConfig(level=logging.DEBUG, format="%(message)s", stream=sys.stdout)
     else:
@@ -97,7 +103,7 @@ def main(*, verbose: bool = True):
 
         # Find unused: things declared but not imported
         # We exclude common CLI tools that aren't usually imported in code
-        cli_only_tools = {"pytest", "ruff", "prek", "ty", "mypy", "black", "isort", "pytest_xdist"}
+        cli_only_tools = {"pytest", "ruff", "prek", "typer", "mypy", "black", "isort", "pytest_xdist"}
         unused = declared_deps - external_used - cli_only_tools
 
         # Filter out local directory modules (rough check)
@@ -108,12 +114,14 @@ def main(*, verbose: bool = True):
 
         if missing:
             _LOGGER.error(
-                f"❌ Project '{member.name}' is missing dependencies: {', '.join(sorted(missing))}. Please add them to pyproject.toml."
+                f"❌ Project '{member.name}' is missing dependencies: {', '.join(sorted(missing))}."
+                "Please add them to pyproject.toml."
             )
             exit_code = 1
         if unused:
             _LOGGER.error(
-                f"❌ Project '{member.name}' has unused dependencies: {', '.join(sorted(unused))}. Please remove them from pyproject.toml."
+                f"❌ Project '{member.name}' has unused dependencies: {', '.join(sorted(unused))}."
+                "Please remove them from pyproject.toml."
             )
             exit_code = 1
         else:
