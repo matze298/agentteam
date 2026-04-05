@@ -1,3 +1,11 @@
+#!/usr/bin/env -S uv run --script
+
+# /// script
+# dependencies = [
+#     "typer",
+# ]
+# ///
+
 """Import checker used for test-selection."""
 
 import ast

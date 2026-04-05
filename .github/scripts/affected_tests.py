@@ -1,3 +1,11 @@
+#!/usr/bin/env -S uv run --script
+
+# /// script
+# dependencies = [
+#     "typer",
+# ]
+# ///
+
 """Identify unit tests to be executed based on changed Python files."""
 
 import logging
@@ -31,16 +39,37 @@ def main() -> None:
 
 def get_changed_py_files() -> set[str]:
     """Find all changed Python files in the PR."""
-    base_ref = os.environ.get("GITHUB_BASE_REF", "main")
+    # In GitHub Actions, GITHUB_EVENT_NAME is 'pull_request' for PRs.
+    # github.event.pull_request.base.sha is the most reliable base commit for a PR.
+    # We can try to get this from an environment variable if passed from the workflow.
+    github_base_sha = os.environ.get("GITHUB_BASE_SHA")
 
     try:
-        # Comparing the PR branch against the base branch origin
-        changed_files_raw = subprocess.check_output(
-            ["git", "diff", "--name-only", f"origin/{base_ref}...HEAD"], text=True
+        if github_base_sha:
+            _LOGGER.info(f"Comparing with GITHUB_BASE_SHA: {github_base_sha}")
+            # Compare current HEAD with the base SHA of the PR
+            changed_files_raw = subprocess.check_output(
+                ["git", "diff", "--name-only", github_base_sha, "HEAD"], text=True
+            )
+        else:
+            base_ref = os.environ.get("GITHUB_BASE_REF", "main")
+            _LOGGER.info(f"GITHUB_BASE_SHA not available. Attempting to find merge-base with origin/{base_ref}.")
+            # Fallback: find the merge base between the base branch and HEAD
+            # This requires 'origin/{base_ref}' to be a valid ref, which means it must be fetched.
+            merge_base_cmd = ["git", "merge-base", f"origin/{base_ref}", "HEAD"]
+            merge_base = subprocess.check_output(merge_base_cmd, text=True).strip()
+            _LOGGER.info(f"Merge base identified as: {merge_base}")
+            changed_files_raw = subprocess.check_output(["git", "diff", "--name-only", merge_base, "HEAD"], text=True)
+    except subprocess.CalledProcessError as e:
+        _LOGGER.warning(
+            f"Failed to get changes using GITHUB_BASE_SHA or merge-base (error: {e}). "
+            "Falling back to 'git diff HEAD^' (may not be accurate for PRs)."
         )
-    except subprocess.CalledProcessError:
-        # Fallback for shallow clones or local execution
+        # Fallback for shallow clones, local execution, or if base branch is not fetched
         changed_files_raw = subprocess.check_output(["git", "diff", "--name-only", "HEAD^"], text=True)
+    except FileNotFoundError:
+        _LOGGER.exception("Git command not found. Ensure Git is installed and in PATH.")
+        sys.exit(1)
     return {f for f in changed_files_raw.splitlines() if f.endswith(".py")}
 
 
