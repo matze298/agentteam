@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = ["agents", "ci", "orchestration"]
+dependencies = ["agents", "ci", "orchestration", "security"]
 optional-dependencies = { dev = [
     "prek",
     "ruff",
@@ -30,9 +30,16 @@ members = [
     "agents",
     "orchestration",
     "ci",
+    "security",
 ]
 
 [tool.uv.sources]
 agents = {workspace = true}
 ci = {workspace = true}
 orchestration = {workspace = true}
+security = {workspace = true}
+
+
+
+[tool.black]
+line-length=120

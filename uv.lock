@@ -13,6 +13,7 @@ members = [
     "agentteam",
     "ci",
     "orchestration",
+    "security",
 ]
 
 [[package]]
@@ -38,6 +39,7 @@ dependencies = [
     { name = "agents" },
     { name = "ci" },
     { name = "orchestration" },
+    { name = "security" },
 ]
 
 [package.optional-dependencies]
@@ -62,6 +64,7 @@ requires-dist = [
     { name = "pytest", marker = "extra == 'test'" },
     { name = "pytest-xdist", marker = "extra == 'test'" },
     { name = "ruff", marker = "extra == 'dev'" },
+    { name = "security", editable = "security" },
     { name = "tomli", marker = "extra == 'test'" },
     { name = "ty", marker = "extra == 'dev'" },
     { name = "typer", marker = "extra == 'dev'", specifier = ">=0.23.1" },
@@ -523,6 +526,12 @@ wheels = [
 name = "ci"
 version = "0.1.0"
 source = { editable = "ci" }
+dependencies = [
+    { name = "typer" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "typer" }]
 
 [[package]]
 name = "click"
@@ -3061,6 +3070,11 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/4c/56/5c7084299bd2cacaa07ae63a91c6f4ba66edc08bf28f356b24f6b717c799/ruff-0.15.9-py3-none-win_amd64.whl", hash = "sha256:45a70921b80e1c10cf0b734ef09421f71b5aa11d27404edc89d7e8a69505e43d", size = 11744969, upload-time = "2026-04-02T18:16:59.611Z" },
     { url = "https://files.pythonhosted.org/packages/03/36/76704c4f312257d6dbaae3c959add2a622f63fcca9d864659ce6d8d97d3d/ruff-0.15.9-py3-none-win_arm64.whl", hash = "sha256:0694e601c028fd97dc5c6ee244675bc241aeefced7ef80cd9c6935a871078f53", size = 11005870, upload-time = "2026-04-02T18:17:15.773Z" },
 ]
+
+[[package]]
+name = "security"
+version = "0.1.0"
+source = { editable = "security" }
 
 [[package]]
 name = "shellingham"

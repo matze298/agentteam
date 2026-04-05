@@ -39,7 +39,7 @@ jobs:
             uv run ci/src/ci/affected_tests.py
             echo "AFFECTED_TESTS=$(echo $AFFECTED_TESTS)" >> $GITHUB_ENV
 
-      - name: Run affected unit tests (not on main)
+      - name: Run unit tests
         run: |
             # Only run if there are affected tests
             if [ -n "$AFFECTED_TESTS" ]; then

@@ -1,5 +1,7 @@
 """Entrypoint for Agent deployment."""
 
+from security.docker import ensure_docker_running
+
 from agents.crew import LatestAiDevelopmentCrew
 
 
@@ -10,4 +12,5 @@ def run() -> None:
 
 
 if __name__ == "__main__":
+    ensure_docker_running()
     run()

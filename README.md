@@ -6,3 +6,9 @@ Python monorepo containing agent teams managed via crewai.
 ## Setup
 * Prerequisite: Install `uv`
 * Run `./setup.py`
+
+
+## Security Considerations
+* Only run in Docker container (ensure Docker is running!)
+* Directory Sandboxing
+* Strict HitL setup
