@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = ["agents", "orchestration"]
+dependencies = ["agents", "ci", "orchestration"]
 optional-dependencies = { dev = [
     "prek",
     "ruff",
@@ -29,8 +29,10 @@ package = false
 members = [
     "agents",
     "orchestration",
+    "ci",
 ]
 
 [tool.uv.sources]
 agents = {workspace = true}
+ci = {workspace = true}
 orchestration = {workspace = true}
