@@ -1,8 +1,7 @@
 """Entrypoint for Agent deployment."""
 
-from security.docker import ensure_docker_running
-
 from agents.crew import LatestAiDevelopmentCrew
+from security.docker import ensure_docker_running
 
 
 def run() -> None:
